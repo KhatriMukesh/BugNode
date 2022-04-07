@@ -73,6 +73,9 @@ app.get("/pendingusers",userController.pendingusers)
 app.post("/disableuser/",userController.disableUser)
 app.post("/approveUser",userController.approveUser)
 
+app.get("/getAllDeveloper",userController.getAllDeveloper)
+app.get("/getAllTester",userController.getAllTester)
+
 
 //status
 app.post("/status",statusController.addStatus)
@@ -117,7 +120,8 @@ app.get("/module/:project",moduleController.getModulebyproject)
 app.post("/tasks",taskController.addTask)
 app.get("/tasks",taskController.getAllTask)
 app.delete("/tasks/:taskId",taskController.deleteTask)
-app.put("/taks",taskController.updateTask)
+app.put("/tasks",taskController.updateTask)
+app.get("/tasks/:taskId",taskController.getTaskById)
 
 //taskUser
 app.post("/taskusers",taskUserController.addTaskUser)

@@ -69,11 +69,25 @@ module.exports.updateTask = function(req,res){
     let taskId = req.body.taskId //postman -> userid 
     let taskName = req.body.taskName
     let description=req.body.description
-    TaskModel.updateOne({_id:taskId},{taskName:taskName},{description:description},function (err, data) {
+    let priorityId = req.body.priorityId
+    let totalTime = req.body.totalTime
+
+        TaskModel.updateOne({_id:taskId},{taskName:taskName,description:description,priorityId:priorityId,totalTime:totalTime   },function (err, data) {
         if (err) {
             res.json({ msg: "Somthing went wrong", data: err, status: -1 })//-1  [ 302 404 500 ]
         } else {
             res.json({ msg: "task update...", data: data, status: 200 })//http status code 
+        }
+    })
+}
+module.exports.getTaskById = function (req, res) {
+    let taskId = req.params.taskId
+    TaskModel.findOne({ _id: taskId }).populate("moduleId").populate("priorityId").populate("projectId").exec(function (err, data) {
+        if (err) {
+            res.json({ msg: "Something Wrong", status: -1, data: err })
+        }
+        else {
+            res.json({ msg: "Data Retraive", status: 200, data: data })
         }
     })
 }

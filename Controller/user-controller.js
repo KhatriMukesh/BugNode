@@ -177,3 +177,28 @@ module.exports.getAllManager = function (req, res) {
         }
     })
 }
+
+module.exports.getAllDeveloper = function (req, res) {
+    UserModel.find({ role: "62473b64ff3a1f2757fd9ce3", projectAssigned: false }, function (err, developers) {
+        if (err) {
+
+            res.json({ msg: "Something Wrong", status: -1, data: req.body })
+        }
+        else {
+
+            res.json({ msg: "Data Retraive", status: 200, data: developers })
+        }
+    })
+}
+module.exports.getAllTester = function (req, res) {
+    UserModel.find({ role: "624bc4f7c9105fb13a944f23", projectAssigned: false }, function (err, testers) {
+        if (err) {
+
+            res.json({ msg: "Something Wrong", status: -1, data: req.body })
+        }
+        else {
+
+            res.json({ msg: "Data Retraive", status: 200, data: testers })
+        }
+    })
+}
