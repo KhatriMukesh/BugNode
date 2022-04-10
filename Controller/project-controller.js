@@ -136,7 +136,6 @@ module.exports.getAllProjects = function (req, res) {
     })
 }
 module.exports.pendingProjects = function (req, res) {
-    console.log(this.pendingProjects);
     ProjectModel.find({statusId:"624c8bfd796acdf5207e1e50"}).populate("statusId").populate("projectManagerID").exec(function (err, project) {
         if (err) {
             res.json({ msg: "Something Wrong", status: -1, data: err })
