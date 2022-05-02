@@ -5,7 +5,7 @@ roleName:{
     type:String
     },
 isActive:{
-    type:Number
+    type:Boolean
 }
 })
 //modal

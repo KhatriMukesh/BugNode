@@ -14,7 +14,7 @@ let TaskSchema = new mongoose.Schema({
             type:String
         },
         startDate:{
-            type:Date
+            type:String
         },
         projectId:{
             type:mongoose.Schema.Types.ObjectId,
@@ -26,12 +26,30 @@ let TaskSchema = new mongoose.Schema({
         },
         moduleId : {
             type:mongoose.Schema.Types.ObjectId,
-            ref:"module"
+            ref:"Module"
         },
         statusId : {
             type:mongoose.Schema.Types.ObjectId,
             ref:"status"
-}
+        },
+        assigned:{
+            type:Boolean
+        },
+        developerId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user"
+        },
+        testerId:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "user"
+        },
+        completionTime:{
+            type:String
+        },
+        bugStatus:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "bugStatus"
+        }
 })
 
 

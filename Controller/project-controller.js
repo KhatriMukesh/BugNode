@@ -7,13 +7,10 @@ module.exports.addProject=function (req,res){
     const description = req.body.description
     const technology = req.body.technology
     const estimatedHours = req.body.estimatedHours
-    // const startDate = req.body.startDate
     let d = new Date()
-    const startDate = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear()
+    let startDate = d.getDate() + "-" + d.getMonth() + "-" + d.getFullYear()
     console.log(startDate);
     const complitionHours = req.body.complitionHours
-    // const statusId = "624c8bfd796acdf5207e1e50"
-
     
     let project = new ProjectModel({
         projectTitle:projectTitle,
@@ -36,13 +33,27 @@ module.exports.addProject=function (req,res){
     })
 }
 //list
-module.exports.getAllProject = function(req,res){
-    ProjectModel.find().populate("statusId").populate("projectManagerID").exec(function(err,roles){
-        if(err){
-            res.json({msg:"Something Wrong",status:-1,data:req.body})
+// module.exports.getAllProject = function(req,res){
+//     ProjectModel.find().populate("statusId").populate("projectManagerID").exec(function(err,roles){
+//         if(err){
+//             res.json({msg:"Something Wrong",status:-1,data:req.body})
+//         }
+//         else{
+//             res.json({msg:"Data Retraive",status:200,data:roles})
+//         }
+//     })
+// }
+
+
+//list
+module.exports.getAllProject = function (req, res) {
+    ProjectModel.find().populate("statusId").populate("projectManagerID").exec(function (err, project) {
+        if (err) {
+            //console.log(err);
+            res.json({ msg: "Something Wrong", status: -1, data: err })
         }
-        else{
-            res.json({msg:"Data Retraive",status:200,data:roles})
+        else {
+            res.json({ msg: "Data Retraive", status: 200, data: project })
         }
     })
 }
@@ -85,11 +96,9 @@ module.exports.updateproject = function (req, res) {
     let projectManagerID = req.body.projectManagerID
     let estimatedHours = req.body.estimatedHours
     let technology = req.body.technology
-   // console.log(technology);
+    // let statusId = req.body.statusId
 
-    let statusId = req.body.statusId
-
-    ProjectModel.updateOne({ _id: projectId }, { projectTitle: projectTitle,technology:technology,description: description, projectManagerID: projectManagerID,estimatedHours: estimatedHours }, function (err, data) {
+    ProjectModel.updateOne({ _id: projectId }, { projectTitle: projectTitle,technology:technology ,description: description, projectManagerID: projectManagerID,estimatedHours: estimatedHours }, function (err, data) {
         if (err) {
             res.json({ msg: "Something Wrong", status: -1, data: req.body })
         }
@@ -110,22 +119,40 @@ module.exports.getProjectById = function(req,res){
         }
     })
 }
-module.exports.getProjectById = function (req, res) {
-    let projectId = req.params.projectId
-    ProjectModel.findOne({ _id: projectId }, function (err, data) {
-        if (err) {
-            res.json({ msg: "Something Wrong", status: -1, data: err })
-        }
-        else {
-            res.json({ msg: "Data Retraive", status: 200, data: data })
-        }
-    })
-}
 module.exports.getAllProjects = function (req, res) {
     let projectManagerIDParam = req.params.projectManagerId
     //console.log(projectManagerIDParam)
 
     ProjectModel.find({ projectManagerID: projectManagerIDParam }).populate("statusId").populate("projectManagerID").exec(function (err, project) {
+        if (err) {
+            //console.log(err);
+            res.json({ msg: "Something Wrong", status: -1, data: err })
+        }
+        else {
+            res.json({ msg: "Data Retraive", status: 200, data: project })
+        }
+    })
+}
+module.exports.getAllPendingProject = function (req, res) {
+    let projectManagerIDParam = req.params.projectManagerId
+    //console.log(projectManagerIDParam)
+
+    ProjectModel.find({ projectManagerID: projectManagerIDParam ,statusId:{$ne:"624c8bdc796acdf5207e1e4e"}}).populate("statusId").populate("projectManagerID").exec(function (err, project) {
+        if (err) {
+            //console.log(err);
+            res.json({ msg: "Something Wrong", status: -1, data: err })
+        }
+        else {
+            res.json({ msg: "Data Retraive", status: 200, data: project })
+        }
+    })
+}
+
+module.exports.getAllCompletedProject = function (req, res) {
+    let projectManagerIDParam = req.params.projectManagerId
+    //console.log(projectManagerIDParam)
+
+    ProjectModel.find({ projectManagerID: projectManagerIDParam ,statusId:"624c8bdc796acdf5207e1e4e"}).populate("statusId").populate("projectManagerID").exec(function (err, project) {
         if (err) {
             //console.log(err);
             res.json({ msg: "Something Wrong", status: -1, data: err })
@@ -153,6 +180,30 @@ module.exports.completedProjects = function (req, res) {
         }
         else {
             res.json({ msg: "Data Retraive", status: 200, data: project })
+        }
+    })
+}
+module.exports.getprojectbyStatus = function(req,res){
+    let status = req.params.status
+    //console.log(status);
+    ProjectModel.find({statusId:status}).populate("statusId").populate("projectManagerID").exec(function(err,roles){
+        if(err){
+            res.json({msg:"Something Wrong",status:-1,data:req.body})
+        }
+        else{
+            res.json({msg:"Data Retraive",status:200,data:roles})
+        }
+    })
+}
+
+module.exports.getProjectTitle = function(req,res){
+    let projectId = req.params.projectId
+    ProjectModel.find({_id:projectId},function(err,roles){
+        if(err){
+            res.json({msg:"Something Wrong",status:-1,data:req.body})
+        }
+        else{
+            res.json({msg:"Data Retraive",status:200,data:roles})
         }
     })
 }

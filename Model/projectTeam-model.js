@@ -9,9 +9,12 @@ projectTeamMember:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"user"
 },
-projectTeamStatus:{
+role:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:"status"
+    ref:"role"
+},
+projectTeamStatus:{
+    type:Boolean
 }
 })
 //modal

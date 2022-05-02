@@ -27,9 +27,15 @@ let ModuleSchema = new mongoose.Schema({
         statusId : {
             type:mongoose.Schema.Types.ObjectId,
             ref:"status"
-}
+        },
+        assigned:{
+            type:Boolean
+        }
 })
 
 
-const ModuleModel = mongoose.model("module",ModuleSchema)
+// const ModuleModel = mongoose.model("module", ModuleSchema)
+// module.exports = ModuleModel
+
+const ModuleModel = mongoose.model("Module",ModuleSchema)
 module.exports = ModuleModel

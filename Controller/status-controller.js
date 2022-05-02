@@ -2,15 +2,15 @@ const StatusModel = require("../Model/status-model")
 
 //add data to table
 module.exports.addStatus=function (req,res){
-    console.log(req.body.statusName);
+    // console.log(req.body.statusName);
     let statusName = req.body.statusName  
-    let isActive = true
+    let isActive = 1
     
     let status = new StatusModel({
         statusName:statusName,
         isActive:isActive
     })
-    console.log(statusName);
+    // console.log(statusName);
     status.save(function(err,success){
         if(err){
             console.log(err);
@@ -56,6 +56,17 @@ module.exports.updateStatus = function(req,res){
         }
         else{
             res.json({msg:"Data Updated",status:200,data:data})
+        }
+    })
+}
+module.exports.getStatusName = function(req,res){
+    let statusId=req.params.statusId
+    StatusModel.find({_id:statusId},function(err,roles){
+        if(err){
+            res.json({msg:"Something Wrong",status:-1,data:req.body})
+        }
+        else{
+            res.json({msg:"Data Retraive",status:200,data:roles})
         }
     })
 }

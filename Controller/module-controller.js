@@ -1,5 +1,5 @@
-const ModuleModel = require("../model/module-model")
-
+const ModuleModel = require("../Model/module-model")
+const { assign } = require("nodemailer/lib/shared")
 
 //add [ POST ]
 module.exports.addModule = function (req, res) {
@@ -11,6 +11,7 @@ module.exports.addModule = function (req, res) {
     let priorityId = req.body.priorityId
     let projectId= req.body.projectId
     let statusId = "624c8bfd796acdf5207e1e50"
+    let assigned = false 
 
     let module = new ModuleModel({
         moduleName: moduleName,
@@ -19,7 +20,8 @@ module.exports.addModule = function (req, res) {
         startDate: startDate,
         priorityId :priorityId,
         projectId:projectId,
-        statusId:statusId
+        statusId:statusId,
+        assigned: assigned
     })
 
     module.save(function (err, data) {
@@ -88,13 +90,38 @@ module.exports.getModuleById = function (req, res) {
 }
 module.exports.getModulebyproject = function (req, res) {
     let projectId = req.params.project
-    console.log(projectId)
+    // console.log(projectId)
     ModuleModel.find({ projectId: projectId }).populate("projectId").exec(function (err, data) {
         if (err) {
             res.json({ msg: "Something Wrong", status: -1, data: err })
         }
         else {
             res.json({ msg: "Data Retraive", status: 200, data: data })
+        }
+    })
+}
+module.exports.getModule = function (req, res) {
+    let projectId = req.params.projectId
+    //console.log(projectId);
+    ModuleModel.find({ projectId: projectId, assigned: false }).populate("projectId").populate("statusId").populate("priorityId").exec(function (err, tasks) {
+        if (err) {
+            res.json({ msg: "Something Wrong", status: -1, data: req.body })
+        }
+        else {
+            //console.log(tasks);
+            res.json({ msg: "Data Retraive", status: 200, data: tasks })
+        }
+    })
+}
+
+module.exports.getModulebyStatus = function (req, res) {
+    let statusId = req.params.statusId
+    ModuleModel.find({ statusId: statusId}).populate("statusId").populate("priorityId").populate("projectId").exec(function (err, tasks) {
+        if (err) {
+            res.json({ msg: "Something Wrong", status: -1, data: req.body })
+        }
+        else {
+            res.json({ msg: "Data Retraive", status: 200, data: tasks })
         }
     })
 }

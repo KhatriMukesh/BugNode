@@ -18,7 +18,7 @@ estimatedHours:{
     type:String
 },
 startDate:{
-    type:Date
+    type:String
 },
 complitionHours:{
     type:String

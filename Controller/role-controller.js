@@ -1,4 +1,6 @@
+const { status }  = require("express/lib/response");
 const RoleModel = require("../Model/role-model")
+
 
 //add data to table
 module.exports.addRole=function addRole(req,res){
@@ -63,6 +65,46 @@ module.exports.getRoleById = function (req, res) {
         }
         else {
             res.json({ msg: "Data Retraive", status: 200, data: data })
+        }
+    })
+}
+module.exports.getRoles = function (req, res) {
+    RoleModel.find(function (err, roles) {
+        if (err) {
+            res.json({ msg: "Something Wrong!", status: -1, data: req.body })
+        }
+        else {
+            if (roles._id == "62473b64ff3a1f2757fd9ce3" || roles._id == "624bc4f7c9105fb13a944f23") {
+                res.json({ msg: "Roles Retraive", status: 200, data: roles })
+                console.log(roles)
+            }
+            else {
+                res.json({ msg: "Something Wrong!", status: -1, data: req.body })
+            }
+        }
+    })
+}
+
+module.exports.roleStatus = function (req, res) {
+    let roleId = req.params.roleId
+    RoleModel.findOne({ _id: roleId }, function (err, data) {
+        if (err) {
+            res.json({ msg: "Something Wrong", status: -1, data: req.body })
+        }
+        else {
+            if (data.isActive == true) {
+                RoleModel.updateOne({ _id: roleId }, { isActive: false }, function (err, data1) {
+                    res.json({ msg: "Role Disabled", status: 200, data: data })
+                })
+            }
+            else if (data.isActive == false) {
+                RoleModel.updateOne({ _id: roleId }, { isActive: true }, function (err, data) {
+                    res.json({ msg: "Activated Successfully", status: 200, data: data })
+                })
+            }
+            else {
+                res.json({ msg: "Something Wrong", status: -1, data: req.body })
+            }
         }
     })
 }

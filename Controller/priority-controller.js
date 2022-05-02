@@ -57,3 +57,14 @@ module.exports.updatePriority = function(req,res){
         }
     })
 }
+module.exports.getpriorityName = function(req,res){
+    let priorityId = req.params.priorityId
+    PriorityModel.find({_id:priorityId},function(err,roles){
+        if(err){
+            res.json({msg:"Something Wrong",status:-1,data:req.body})
+        }
+        else{
+            res.json({msg:"Data Retraive",status:200,data:roles})
+        }
+    })
+}

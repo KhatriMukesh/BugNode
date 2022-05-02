@@ -26,7 +26,18 @@ let UserSchema = new mongoose.Schema({
         ref:"role"
     },
     isActive:{
-        type:Number
+        type:Boolean
+    },
+    OTP:{
+        type:String
+    },status:{
+        type:String
+    },
+    projectAssigned:{
+        type:Boolean
+    },
+    activeProject:{
+        type:Boolean
     }
 })
 
